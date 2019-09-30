@@ -1,0 +1,131 @@
+%define _bindir /bin
+
+Name:                 zsh
+Version:              5.6.2
+Release:              2
+Summary:              A shell designed for interactive use
+License:              MIT
+URL:                  http://zsh.sourceforge.net
+Source0:              https://downloads.sourceforge.net/%{name}/%{name}-%{version}.tar.xz
+
+# Source1 to Source6 get from fedora
+Source1:              zlogin.rhs
+Source2:              zlogout.rhs
+Source3:              zprofile.rhs
+Source4:              zshrc.rhs
+Source5:              zshenv.rhs
+Source6:              dotzshrc
+
+BuildRequires:        autoconf coreutils gawk gdbm-devel libcap-devel
+BuildRequires:        ncurses-devel pcre-devel sed texi2html texinfo hostname
+
+Requires(post):       info grep
+Requires(preun):      info
+Requires(postun):     coreutils grep
+
+Provides:             /bin/zsh
+
+%description
+The zsh is a shell designed for interactive use, and it is also a powerful scripting language. Many of
+the useful features of bash, ksh, and tcsh were incorporated into zsh. It can match files by file extension
+without running an external program, share command history with any shell, and more.
+
+%package              help
+Summary:              zsh shell manual in html format
+BuildArch:            noarch
+
+Provides:             zsh-html
+Obsoletes:            zsh-html
+
+%description          help
+This package contains the zsh manual in html format.
+
+%prep
+%autosetup -p1
+autoreconf -fiv
+
+sed -e 's|^\.NOTPARALLEL|#.NOTPARALLEL|' -i 'Config/defs.mk.in'
+
+%build
+%undefine _strict_symbol_defs_build
+
+export LIBLDFLAGS='-z lazy'
+
+%configure --enable-etcdir=%{_sysconfdir} --with-tcsetpgrp --enable-maildir-support --enable-pcre
+
+make -C Src headers
+make -C Src -f Makemod zsh{path,xmod}s.h version.h
+%make_build all html
+
+%check
+make check
+
+%install
+%make_install install.info fndir=%{_datadir}/%{name}/%{version}/functions sitefndir=%{_datadir}/%{name}/site-functions \
+                           scriptdir=%{_datadir}/%{name}/%{version}/scripts sitescriptdir=%{_datadir}/%{name}/scripts \
+                           runhelpdir=%{_datadir}/%{name}/%{version}/help
+
+rm -f $RPM_BUILD_ROOT%{_bindir}/zsh-%{version}
+rm -f $RPM_BUILD_ROOT%{_infodir}/dir
+
+install -d ${RPM_BUILD_ROOT}%{_sysconfdir}
+for i in %{SOURCE1} %{SOURCE2} %{SOURCE3} %{SOURCE4} %{SOURCE5}; do
+    install -m 644 $i $RPM_BUILD_ROOT%{_sysconfdir}/"$(basename $i .rhs)"
+done
+
+install -d $RPM_BUILD_ROOT%{_sysconfdir}/skel
+install -m 644 %{SOURCE6} $RPM_BUILD_ROOT%{_sysconfdir}/skel/.zshrc
+
+for i in checkmail harden run-help zcalc zkbd; do
+    sed -i -e 's!/usr/local/bin/zsh!%{_bindir}/zsh!' $RPM_BUILD_ROOT%{_datadir}/zsh/%{version}/functions/$i
+    chmod +x $RPM_BUILD_ROOT%{_datadir}/zsh/%{version}/functions/$i
+done
+
+%post
+if [ "$1" = 1 ]; then
+  if [ ! -f %{_sysconfdir}/shells ] ; then
+    echo "%{_bindir}/%{name}" > %{_sysconfdir}/shells
+    echo "/bin/%{name}" >> %{_sysconfdir}/shells
+  else
+    grep -q "^%{_bindir}/%{name}$" %{_sysconfdir}/shells || echo "%{_bindir}/%{name}" >> %{_sysconfdir}/shells
+    grep -q "^/bin/%{name}$" %{_sysconfdir}/shells || echo "/bin/%{name}" >> %{_sysconfdir}/shells
+  fi
+fi
+
+if [ -f %{_infodir}/zsh.info.gz ]; then
+/sbin/install-info %{_infodir}/zsh.info.gz %{_infodir}/dir \
+  --entry="* zsh: (zsh).                        An enhanced bourne shell."
+fi
+
+%preun
+if [ "$1" = 0 ] ; then
+    if [ -f %{_infodir}/zsh.info.gz ]; then
+    /sbin/install-info --delete %{_infodir}/zsh.info.gz %{_infodir}/dir \
+      --entry="* zsh: (zsh).                    An enhanced bourne shell."
+    fi
+fi
+
+%postun
+if [ "$1" = 0 ] && [ -f %{_sysconfdir}/shells ] ; then
+  sed -i '\!^%{_bindir}/%{name}$!d' %{_sysconfdir}/shells
+  sed -i '\!^/bin/%{name}$!d' %{_sysconfdir}/shells
+fi
+
+%files
+%doc README LICENCE Etc/* FEATURES MACHINES NEWS
+%attr(755,root,root) %{_bindir}/zsh
+
+%{_libdir}/zsh
+
+%config(noreplace) %{_sysconfdir}/skel/.z*
+%config(noreplace) %{_sysconfdir}/z*
+
+%files help
+%doc Doc/*.html
+%{_mandir}/*/*
+%{_infodir}/*
+%{_datadir}/zsh
+
+%changelog
+* Wed Sep 18 2019 dongjian <dongjian13@huawei.com> - 5.6.2-2
+- modify summary
