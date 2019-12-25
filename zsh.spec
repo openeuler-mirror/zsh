@@ -2,7 +2,7 @@
 
 Name:                 zsh
 Version:              5.6.2
-Release:              2
+Release:              3 
 Summary:              A shell designed for interactive use
 License:              MIT
 URL:                  http://zsh.sourceforge.net
@@ -24,6 +24,8 @@ Requires(preun):      info
 Requires(postun):     coreutils grep
 
 Provides:             /bin/zsh
+
+Patch6000: 0225-44345-fix-wordcode-traversal-where-without-a-followi.patch
 
 %description
 The zsh is a shell designed for interactive use, and it is also a powerful scripting language. Many of
@@ -127,5 +129,11 @@ fi
 %{_datadir}/zsh
 
 %changelog
+* Wed Dec 18 2019 jiangchuangang <jiangchuangang@huawei.com> - 5.6.2-3
+- Type:enhancement
+- ID:NA
+- SUG:restart
+- DESC:Synchronize a patch
+
 * Wed Sep 18 2019 dongjian <dongjian13@huawei.com> - 5.6.2-2
 - modify summary
