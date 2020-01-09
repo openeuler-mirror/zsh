@@ -1,19 +1,20 @@
 %define _bindir /bin
 
 Name:                 zsh
-Version:              5.6.2
-Release:              3 
+Version:              5.7.1
+Release:              1 
 Summary:              A shell designed for interactive use
 License:              MIT
 URL:                  http://zsh.sourceforge.net
 Source0:              https://downloads.sourceforge.net/%{name}/%{name}-%{version}.tar.xz
 
-# Source1 to Source6 get from fedora
-Source1:              zlogin.rhs
-Source2:              zlogout.rhs
-Source3:              zprofile.rhs
-Source4:              zshrc.rhs
-Source5:              zshenv.rhs
+# There are five startup files that zsh will read commands from
+# http://zsh.sourceforge.net/Intro/intro_3.html
+Source1:              zlogin
+Source2:              zlogout
+Source3:              zprofile
+Source4:              zshrc
+Source5:              zshenv
 Source6:              dotzshrc
 
 BuildRequires:        autoconf coreutils gawk gdbm-devel libcap-devel
@@ -72,7 +73,7 @@ rm -f $RPM_BUILD_ROOT%{_infodir}/dir
 
 install -d ${RPM_BUILD_ROOT}%{_sysconfdir}
 for i in %{SOURCE1} %{SOURCE2} %{SOURCE3} %{SOURCE4} %{SOURCE5}; do
-    install -m 644 $i $RPM_BUILD_ROOT%{_sysconfdir}/"$(basename $i .rhs)"
+    install -m 644 $i $RPM_BUILD_ROOT%{_sysconfdir}/"${i##*/}"
 done
 
 install -d $RPM_BUILD_ROOT%{_sysconfdir}/skel
@@ -129,6 +130,12 @@ fi
 %{_datadir}/zsh
 
 %changelog
+* Wed Jan 8 2020 openEuler Buildteam <buildteam@openeuler.org> - 5.7.1-1
+- Type:enhancement
+- ID:NA
+- SUG:NA
+- DESC:update version to 5.7.1
+
 * Wed Dec 18 2019 jiangchuangang <jiangchuangang@huawei.com> - 5.6.2-3
 - Type:enhancement
 - ID:NA
