@@ -2,7 +2,7 @@
 
 Name:                 zsh
 Version:              5.7.1
-Release:              2 
+Release:              3 
 Summary:              A shell designed for interactive use
 License:              MIT
 URL:                  http://zsh.sourceforge.net
@@ -122,14 +122,20 @@ fi
 
 %config(noreplace) %{_sysconfdir}/skel/.z*
 %config(noreplace) %{_sysconfdir}/z*
+%{_datadir}/zsh
 
 %files help
 %doc Doc/*.html
 %{_mandir}/*/*
 %{_infodir}/*
-%{_datadir}/zsh
 
 %changelog
+* Mon Feb 3 2020 openEuler Buildteam <buildteam@openeuler.org> - 5.7.1-3
+- Type:enhancement
+- ID:NA
+- SUG:NA
+- DESC:fix missing files 
+
 * Wed Jan 15 2020 openEuler Buildteam <buildteam@openeuler.org> - 5.7.1-2
 - Type:enhancement
 - ID:NA
