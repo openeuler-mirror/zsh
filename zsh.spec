@@ -2,7 +2,7 @@
 
 Name:                 zsh
 Version:              5.7.1
-Release:              3 
+Release:              4
 Summary:              A shell designed for interactive use
 License:              MIT
 URL:                  http://zsh.sourceforge.net
@@ -17,8 +17,8 @@ Source4:              zshrc
 Source5:              zshenv
 Source6:              dotzshrc
 
-BuildRequires:        autoconf coreutils gawk gdbm-devel libcap-devel
-BuildRequires:        ncurses-devel pcre-devel sed texinfo hostname
+BuildRequires:        autoconf coreutils gawk gdbm-devel libcap-devel make
+BuildRequires:        ncurses-devel pcre-devel sed texinfo hostname gcc
 
 Requires(post):       info grep
 Requires(preun):      info
@@ -130,6 +130,12 @@ fi
 %{_infodir}/*
 
 %changelog
+* Thu Feb 6 2020 openEuler Buildteam <buildteam@openeuler.org> - 5.7.1-4
+- Type:enhancement
+- ID:NA
+- SUG:NA
+- DESC:add buildrequires of gcc and make
+
 * Mon Feb 3 2020 openEuler Buildteam <buildteam@openeuler.org> - 5.7.1-3
 - Type:enhancement
 - ID:NA
