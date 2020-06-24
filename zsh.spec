@@ -2,7 +2,7 @@
 
 Name:                 zsh
 Version:              5.7.1
-Release:              4
+Release:              5
 Summary:              A shell designed for interactive use
 License:              MIT
 URL:                  http://zsh.sourceforge.net
@@ -26,7 +26,8 @@ Requires(postun):     coreutils grep
 
 Provides:             /bin/zsh
 
-Patch6000: 0225-44345-fix-wordcode-traversal-where-without-a-followi.patch
+Patch0000: 0225-44345-fix-wordcode-traversal-where-without-a-followi.patch
+Patch0001: CVE-2019-20044.patch
 
 %description
 The zsh is a shell designed for interactive use, and it is also a powerful scripting language. Many of
@@ -130,6 +131,12 @@ fi
 %{_infodir}/*
 
 %changelog
+* Wed Jun 24 2020 xuping <xuping21@huawei.com> - 5.7.1-5
+- Type:cves
+- ID:CVE-2019-20044
+- SUG:NA
+- DESC:fix CVE-2019-20044
+
 * Thu Feb 6 2020 openEuler Buildteam <buildteam@openeuler.org> - 5.7.1-4
 - Type:enhancement
 - ID:NA
