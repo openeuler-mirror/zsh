@@ -1,8 +1,8 @@
 %define _bindir /bin
 
 Name:                 zsh
-Version:              5.7.1
-Release:              5
+Version:              5.8
+Release:              1
 Summary:              A shell designed for interactive use
 License:              MIT
 URL:                  http://zsh.sourceforge.net
@@ -26,8 +26,7 @@ Requires(postun):     coreutils grep
 
 Provides:             /bin/zsh
 
-Patch0000: 0225-44345-fix-wordcode-traversal-where-without-a-followi.patch
-Patch0001: CVE-2019-20044.patch
+Patch0: backport-Simplify-N-cond-test.patch
 
 %description
 The zsh is a shell designed for interactive use, and it is also a powerful scripting language. Many of
@@ -131,6 +130,12 @@ fi
 %{_infodir}/*
 
 %changelog
+* Fri Jan 29 2021 zoulin <zoulin13@huawei.com> - 5.8-1
+- Type:enhancement
+- ID:NA
+- SUG:NA
+- DESC:update version to 5.8
+
 * Wed Jun 24 2020 xuping <xuping21@huawei.com> - 5.7.1-5
 - Type:cves
 - ID:CVE-2019-20044
