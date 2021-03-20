@@ -2,7 +2,7 @@
 
 Name:                 zsh
 Version:              5.8
-Release:              1
+Release:              2
 Summary:              A shell designed for interactive use
 License:              MIT
 URL:                  http://zsh.sourceforge.net
@@ -52,7 +52,7 @@ sed -e 's|^\.NOTPARALLEL|#.NOTPARALLEL|' -i 'Config/defs.mk.in'
 %build
 %undefine _strict_symbol_defs_build
 
-export LIBLDFLAGS='-z lazy'
+export LIBLDFLAGS='-z lazy -fstack-protector-strong'
 
 %configure --enable-etcdir=%{_sysconfdir} --with-tcsetpgrp --enable-maildir-support --enable-pcre
 
@@ -130,6 +130,12 @@ fi
 %{_infodir}/*
 
 %changelog
+* Sat Mar 20 2021 shenyangyang <shenyangyang4@huawei.com> - 5.8-2
+- Type:enhancement
+- ID:NA
+- SUG:NA
+- DESC:add -fstack-protector-strong for so file
+
 * Fri Jan 29 2021 zoulin <zoulin13@huawei.com> - 5.8-1
 - Type:enhancement
 - ID:NA
