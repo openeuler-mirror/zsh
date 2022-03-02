@@ -2,7 +2,7 @@
 
 Name:                 zsh
 Version:              5.7.1
-Release:              5
+Release:              6
 Summary:              A shell designed for interactive use
 License:              MIT
 URL:                  http://zsh.sourceforge.net
@@ -28,6 +28,9 @@ Provides:             /bin/zsh
 
 Patch0000: 0225-44345-fix-wordcode-traversal-where-without-a-followi.patch
 Patch0001: CVE-2019-20044.patch
+Patch0002: backport-CVE-2021-45444-1.patch
+Patch0003: backport-CVE-2021-45444-2.patch
+
 
 %description
 The zsh is a shell designed for interactive use, and it is also a powerful scripting language. Many of
@@ -131,6 +134,12 @@ fi
 %{_infodir}/*
 
 %changelog
+* Tue Mar 1 2022 wangjie <wangjie375@h-partners.com> - 5.7.1-6
+- Type: CVE
+- ID: CVE-2021-45444
+- SUG: NA
+- DESC: fix CVE-2021-45444
+
 * Wed Jun 24 2020 xuping <xuping21@huawei.com> - 5.7.1-5
 - Type:cves
 - ID:CVE-2019-20044
