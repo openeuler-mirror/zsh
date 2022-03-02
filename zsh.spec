@@ -2,7 +2,7 @@
 
 Name:                 zsh
 Version:              5.8
-Release:              2
+Release:              3
 Summary:              A shell designed for interactive use
 License:              MIT
 URL:                  http://zsh.sourceforge.net
@@ -27,6 +27,8 @@ Requires(postun):     coreutils grep
 Provides:             /bin/zsh
 
 Patch0: backport-Simplify-N-cond-test.patch
+Patch1: backport-CVE-2021-45444-1.patch
+Patch2: backport-CVE-2021-45444-2.patch
 
 %description
 The zsh is a shell designed for interactive use, and it is also a powerful scripting language. Many of
@@ -130,6 +132,12 @@ fi
 %{_infodir}/*
 
 %changelog
+* Tue Mar 1 2022 wangjie <wangjie375@h-partners.com> - 5.8-3
+- Type: CVE
+- ID: CVE-2021-45444
+- SUG: NA
+- DESC: fix CVE-2021-45444
+
 * Sat Mar 20 2021 shenyangyang <shenyangyang4@huawei.com> - 5.8-2
 - Type:enhancement
 - ID:NA
